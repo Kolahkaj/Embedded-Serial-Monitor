@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Embedded Serial Monitor: a desktop tool for Serial, TCP, and UDP communication.">
+  <title>Embedded Serial Monitor</title>
+  <style>
+    /* Simple practical page: no dependencies, images, or build tools. */
+    :root { --blue: #075985; --blue-dark: #0c4a6e; --line: #d1d5db; --bg: #f8fafc; --text: #172033; --muted: #4b5563; --card: #ffffff; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 Arial, Helvetica, sans-serif; }
+    .page { width: min(980px, calc(100% - 32px)); margin: 0 auto; }
+    header { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 2; }
+    .header-row { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { font-size: 20px; font-weight: 700; color: var(--blue-dark); text-decoration: none; }
+    .language { display: flex; align-items: center; gap: 6px; padding: 5px; border: 1px solid #94a3b8; border-radius: 6px; background: #fff; }
+    .language-label { font-size: 12px; color: var(--muted); margin-inline: 4px; }
+    .language button { border: 0; border-radius: 4px; background: transparent; color: var(--blue-dark); padding: 7px 10px; font-weight: 700; cursor: pointer; }
+    .language button.active { background: var(--blue-dark); color: #fff; }
+    main { padding: 34px 0 54px; }
+    h1, h2 { line-height: 1.22; margin: 0; }
+    h1 { font-size: clamp(28px, 4vw, 40px); }
+    h2 { font-size: 22px; color: var(--blue-dark); margin-bottom: 12px; }
+    p { margin: 0 0 12px; }
+    .intro { background: #e0f2fe; border-left: 5px solid var(--blue); padding: 22px; border-radius: 4px; }
+    .intro p { margin-top: 12px; max-width: 760px; }
+    section { margin-top: 30px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 18px; }
+    .card h3 { margin: 0 0 8px; font-size: 18px; color: var(--blue-dark); }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    ul, ol { margin: 0; padding-inline-start: 22px; }
+    li { margin: 7px 0; }
+    .table-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--line); border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; min-width: 610px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: #f1f5f9; color: #334155; font-size: 14px; }
+    tr:last-child td { border-bottom: 0; }
+    code { background: #eff6ff; color: #0c4a6e; padding: 2px 5px; border-radius: 3px; font-size: 12px; word-break: break-word; }
+    .download { display: inline-block; border-radius: 4px; background: var(--blue); color: #fff; padding: 7px 11px; text-decoration: none; font-size: 14px; font-weight: 700; }
+    .download:hover { background: var(--blue-dark); }
+    .note { font-size: 14px; color: var(--muted); background: #fff7ed; border: 1px solid #fed7aa; padding: 14px; border-radius: 5px; }
+    footer { border-top: 1px solid var(--line); background: #fff; padding: 22px 0; color: var(--muted); font-size: 14px; }
+    [dir="rtl"] body { font-family: Tahoma, Arial, sans-serif; }
+    [dir="rtl"] .intro { border-left: 0; border-right: 5px solid var(--blue); }
+    [dir="rtl"] th, [dir="rtl"] td { text-align: right; }
+    [dir="rtl"] code { direction: ltr; display: inline-block; text-align: left; }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .header-row { min-height: 74px; } .brand { font-size: 18px; } .language-label { display: none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="page header-row">
+      <a class="brand" href="#top" id="brand">Embedded Serial Monitor</a>
+      <div class="language" aria-label="Language selector">
+        <span class="language-label" id="languageLabel">Language:</span>
+        <button id="enButton" class="active" type="button" aria-pressed="true">EN</button>
+        <button id="faButton" type="button" aria-pressed="false">فارسی</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" id="top">
+    <section class="intro">
+      <h1 id="title">Embedded Serial Monitor</h1>
+      <p id="summary">A desktop tool for monitoring and sending data through Serial, TCP, and UDP connections.</p>
+    </section>
+
+    <section>
+      <h2 id="modesHeading">Connection modes</h2>
+      <div class="grid" id="modes"></div>
+    </section>
+
+    <section>
+      <h2 id="featuresHeading">Main functions</h2>
+      <div class="card"><ul id="features"></ul></div>
+    </section>
+
+    <section>
+      <h2 id="downloadsHeading">Downloads</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th id="platformHeader">Platform</th><th id="fileHeader">File</th><th id="actionHeader">Action</th></tr></thead>
+          <tbody id="downloads"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="useHeading">Basic use</h2>
+      <div class="card"><ol id="steps"></ol></div>
+    </section>
+
+    <section class="note" id="releaseNote"></section>
+  </main>
+
+  <footer><div class="page" id="footerText">Embedded Serial Monitor is a local desktop application. Network connections are made directly from your computer.</div></footer>
+
+  <script>
+    // Set this once after you create the GitHub Release.
+    const RELEASE_BASE = "https://github.com/REPLACE-OWNER/REPLACE-REPOSITORY/releases/download/v0.1.0";
+
+    const files = [
+      ["win64", "embedded-serial-monitor-win64-setup.exe"],
+      ["win32", "embedded-serial-monitor-win32-setup.exe"],
+      ["debian", "embedded-serial-monitor_0.1.0_amd64.deb"],
+      ["arch", "embedded-serial-monitor-0.1.0-1-x86_64.pkg.tar.zst"],
+      ["portable", "embedded-serial-monitor-0.1.0-linux-x86_64-portable.tar.gz"]
+    ];
+
+    const content = {
+      en: {
+        docTitle: "Embedded Serial Monitor",
+        description: "Embedded Serial Monitor: a desktop tool for Serial, TCP, and UDP communication.",
+        brand: "Embedded Serial Monitor", language: "Language:",
+        title: "Embedded Serial Monitor",
+        summary: "A desktop tool for monitoring and sending data through Serial, TCP, and UDP connections.",
+        modesHeading: "Connection modes",
+        modes: [
+          ["Serial", "Open a COM or device port. Set baud rate, data bits, parity, stop bits, and flow control."],
+          ["TCP", "Connect to a TCP server or listen for an incoming TCP connection."],
+          ["UDP", "Send and receive UDP datagrams using a local or remote port."]
+        ],
+        featuresHeading: "Main functions",
+        features: ["Live receive and transmit data", "Keyword filtering and copyable records", "Start/stop text logging", "Export retained data as CSV, JSON, or SQLite", "Plot numeric values from structured messages", "Separate Serial Network Bridge window"],
+        downloadsHeading: "Downloads", platformHeader: "Platform", fileHeader: "File", actionHeader: "Action",
+        platforms: {win64:"Windows 64-bit", win32:"Windows 32-bit", debian:"Debian / Ubuntu", arch:"Arch Linux", portable:"Portable Linux"},
+        download: "Download", useHeading: "Basic use",
+        steps: ["Choose Serial, TCP, or UDP in the connection settings.", "Connect, then read or send data in the main window.", "Use Start Logging for a text file or Export for CSV, JSON, or SQLite."],
+        note: "Before publishing this page, replace <code>REPLACE-OWNER/REPLACE-REPOSITORY</code> in <code>RELEASE_BASE</code> with your GitHub repository name.",
+        footer: "Embedded Serial Monitor is a local desktop application. Network connections are made directly from your computer."
+      },
+      fa: {
+        docTitle: "مانیتور سریال امبدد", description: "مانیتور سریال امبدد: ابزار دسکتاپ برای ارتباط سریال، TCP و UDP.",
+        brand: "مانیتور سریال امبدد", language: "زبان:", title: "مانیتور سریال امبدد",
+        summary: "ابزار دسکتاپ برای مشاهده و ارسال داده از طریق اتصال‌های سریال، TCP و UDP.",
+        modesHeading: "حالت‌های اتصال",
+        modes: [
+          ["سریال", "پورت COM یا دستگاه را باز کنید. سرعت، بیت داده، parity، بیت توقف و کنترل جریان را تنظیم کنید."],
+          ["TCP", "به سرور TCP وصل شوید یا برای اتصال ورودی TCP گوش دهید."],
+          ["UDP", "دیتاگرام‌های UDP را با پورت محلی یا راه‌دور ارسال و دریافت کنید."]
+        ],
+        featuresHeading: "عملکردهای اصلی",
+        features: ["دادهٔ زندهٔ دریافت و ارسال", "فیلتر با کلیدواژه و رکوردهای قابل کپی", "شروع و توقف لاگ متنی", "خروجی‌گرفتن از داده‌های نگه‌داری‌شده به CSV، JSON یا SQLite", "رسم مقادیر عددی از پیام‌های ساخت‌یافته", "پنجرهٔ جداگانه برای پل شبکهٔ سریال"],
+        downloadsHeading: "دانلودها", platformHeader: "سیستم‌عامل", fileHeader: "فایل", actionHeader: "دریافت",
+        platforms: {win64:"ویندوز ۶۴ بیتی", win32:"ویندوز ۳۲ بیتی", debian:"دبیان / اوبونتو", arch:"لینوکس آرچ", portable:"لینوکس قابل حمل"},
+        download: "دریافت", useHeading: "روش استفاده",
+        steps: ["در تنظیمات اتصال، سریال، TCP یا UDP را انتخاب کنید.", "وصل شوید و داده را در پنجرهٔ اصلی بخوانید یا ارسال کنید.", "برای فایل متنی از شروع لاگ و برای CSV، JSON یا SQLite از خروجی استفاده کنید."],
+        note: "پیش از انتشار این صفحه، مقدار <code>REPLACE-OWNER/REPLACE-REPOSITORY</code> را در <code>RELEASE_BASE</code> با نام مخزن GitHub خود جایگزین کنید.",
+        footer: "مانیتور سریال امبدد یک برنامهٔ دسکتاپ محلی است. اتصال‌های شبکه مستقیماً از رایانهٔ شما برقرار می‌شوند."
+      }
+    };
+
+    const setText = (id, value) => document.getElementById(id).textContent = value;
+    const setLanguage = (lang) => {
+      const t = content[lang];
+      const rtl = lang === "fa";
+      document.documentElement.lang = lang;
+      document.documentElement.dir = rtl ? "rtl" : "ltr";
+      document.title = t.docTitle;
+      document.querySelector('meta[name="description"]').content = t.description;
+      setText("brand", t.brand); setText("languageLabel", t.language); setText("title", t.title); setText("summary", t.summary);
+      setText("modesHeading", t.modesHeading); setText("featuresHeading", t.featuresHeading); setText("downloadsHeading", t.downloadsHeading);
+      setText("platformHeader", t.platformHeader); setText("fileHeader", t.fileHeader); setText("actionHeader", t.actionHeader); setText("useHeading", t.useHeading); setText("footerText", t.footer);
+      document.getElementById("modes").innerHTML = t.modes.map(([name, text]) => `<article class="card"><h3>${name}</h3><p>${text}</p></article>`).join("");
+      document.getElementById("features").innerHTML = t.features.map(item => `<li>${item}</li>`).join("");
+      document.getElementById("steps").innerHTML = t.steps.map(item => `<li>${item}</li>`).join("");
+      document.getElementById("downloads").innerHTML = files.map(([platform, file]) => `<tr><td>${t.platforms[platform]}</td><td><code>${file}</code></td><td><a class="download" href="${RELEASE_BASE}/${file}">${t.download}</a></td></tr>`).join("");
+      document.getElementById("releaseNote").innerHTML = t.note;
+      document.getElementById("enButton").classList.toggle("active", !rtl); document.getElementById("faButton").classList.toggle("active", rtl);
+      document.getElementById("enButton").setAttribute("aria-pressed", String(!rtl)); document.getElementById("faButton").setAttribute("aria-pressed", String(rtl));
+      try { localStorage.setItem("esm-language", lang); } catch (e) {}
+    };
+
+    document.getElementById("enButton").addEventListener("click", () => setLanguage("en"));
+    document.getElementById("faButton").addEventListener("click", () => setLanguage("fa"));
+    try { setLanguage(localStorage.getItem("esm-language") === "fa" ? "fa" : "en"); } catch (e) { setLanguage("en"); }
+  </script>
+</body>
+</html>
