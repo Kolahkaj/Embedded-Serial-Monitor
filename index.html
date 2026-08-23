@@ -6,78 +6,570 @@
   <meta name="description" content="Embedded Serial Monitor: a desktop tool for Serial, TCP, and UDP communication.">
   <title>Embedded Serial Monitor</title>
   <style>
-    /* Simple practical page: no dependencies, images, or build tools. */
-    :root { --blue: #075985; --blue-dark: #0c4a6e; --line: #d1d5db; --bg: #f8fafc; --text: #172033; --muted: #4b5563; --card: #ffffff; }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 Arial, Helvetica, sans-serif; }
-    .page { width: min(980px, calc(100% - 32px)); margin: 0 auto; }
-    header { background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 2; }
-    .header-row { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-    .brand { font-size: 20px; font-weight: 700; color: var(--blue-dark); text-decoration: none; }
-    .language { display: flex; align-items: center; gap: 6px; padding: 5px; border: 1px solid #94a3b8; border-radius: 6px; background: #fff; }
-    .language-label { font-size: 12px; color: var(--muted); margin-inline: 4px; }
-    .language button { border: 0; border-radius: 4px; background: transparent; color: var(--blue-dark); padding: 7px 10px; font-weight: 700; cursor: pointer; }
-    .language button.active { background: var(--blue-dark); color: #fff; }
-    main { padding: 34px 0 54px; }
-    h1, h2 { line-height: 1.22; margin: 0; }
-    h1 { font-size: clamp(28px, 4vw, 40px); }
-    h2 { font-size: 22px; color: var(--blue-dark); margin-bottom: 12px; }
-    p { margin: 0 0 12px; }
-    .intro { background: #e0f2fe; border-left: 5px solid var(--blue); padding: 22px; border-radius: 4px; }
-    .intro p { margin-top: 12px; max-width: 760px; }
-    section { margin-top: 30px; }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 18px; }
-    .card h3 { margin: 0 0 8px; font-size: 18px; color: var(--blue-dark); }
-    .card p { margin: 0; color: var(--muted); font-size: 14px; }
-    ul, ol { margin: 0; padding-inline-start: 22px; }
-    li { margin: 7px 0; }
-    .table-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--line); border-radius: 6px; }
-    table { width: 100%; border-collapse: collapse; min-width: 610px; }
-    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-    th { background: #f1f5f9; color: #334155; font-size: 14px; }
-    tr:last-child td { border-bottom: 0; }
-    code { background: #eff6ff; color: #0c4a6e; padding: 2px 5px; border-radius: 3px; font-size: 12px; word-break: break-word; }
-    .download { display: inline-block; border-radius: 4px; background: var(--blue); color: #fff; padding: 7px 11px; text-decoration: none; font-size: 14px; font-weight: 700; }
-    .download:hover { background: var(--blue-dark); }
-    .note { font-size: 14px; color: var(--muted); background: #fff7ed; border: 1px solid #fed7aa; padding: 14px; border-radius: 5px; }
-    footer { border-top: 1px solid var(--line); background: #fff; padding: 22px 0; color: var(--muted); font-size: 14px; }
-    [dir="rtl"] body { font-family: Tahoma, Arial, sans-serif; }
-    [dir="rtl"] .intro { border-left: 0; border-right: 5px solid var(--blue); }
-    [dir="rtl"] th, [dir="rtl"] td { text-align: right; }
-    [dir="rtl"] code { direction: ltr; display: inline-block; text-align: left; }
-    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .header-row { min-height: 74px; } .brand { font-size: 18px; } .language-label { display: none; } }
+    /* ============================================================
+       MODERN FUTURISTIC UI — Glassmorphism + Neon Accents
+       ============================================================ */
+
+    /* ----- CSS Variables ----- */
+    :root {
+      --bg-primary: #0b0d15;
+      --bg-secondary: #12162a;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border-glass: rgba(255, 255, 255, 0.06);
+      --border-glass-strong: rgba(255, 255, 255, 0.12);
+      --text-primary: #f0f4ff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #00e5ff;
+      --accent-blue: #4d7cff;
+      --accent-purple: #a855f7;
+      --accent-glow: rgba(0, 229, 255, 0.15);
+      --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ----- Reset & Base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg-primary);
+      background-image:
+        radial-gradient(ellipse at 10% 20%, rgba(77, 124, 255, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 90% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 229, 255, 0.02) 0%, transparent 70%);
+      min-height: 100vh;
+      color: var(--text-primary);
+      font: 16px/1.6 var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ----- Scrollbar ----- */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-cyan);
+      border-radius: 10px;
+      opacity: 0.4;
+    }
+
+    /* ----- Container ----- */
+    .page {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 0 4px;
+    }
+
+    /* ----- Header / Nav ----- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(11, 13, 21, 0.72);
+      backdrop-filter: blur(20px) saturate(1.4);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 0 0 2px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 20px;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand small {
+      font-weight: 400;
+      font-size: 14px;
+      -webkit-text-fill-color: var(--text-secondary);
+      background: none;
+      color: var(--text-secondary);
+    }
+
+    /* ----- Main ----- */
+    main {
+      padding: 48px 0 72px;
+    }
+
+    /* ----- Typography ----- */
+    h1 {
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-glass-strong), transparent);
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin: 0 0 12px;
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    a:hover {
+      color: #fff;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--accent-cyan);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 229, 255, 0.08);
+    }
+
+    /* ----- Intro / Hero ----- */
+    .intro {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 0%, rgba(0, 229, 255, 0.05), transparent 60%);
+      pointer-events: none;
+    }
+
+    .intro p {
+      font-size: 17px;
+      max-width: 680px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      position: relative;
+    }
+
+    /* ----- Grids ----- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    /* ----- Cards ----- */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      transition: var(--transition);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glass-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card h3 .badge {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--accent-cyan);
+      padding: 0 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 229, 255, 0.08);
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* ----- Table Wrappers ----- */
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 580px;
+      font-size: 14px;
+    }
+
+    th {
+      text-align: left;
+      padding: 14px 18px;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-glass);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    td strong {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* ----- Download Buttons ----- */
+    .download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 40px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #0b0d15;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: var(--transition);
+      border: 0;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    }
+
+    .download:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.3);
+      color: #0b0d15;
+    }
+
+    /* ----- Plot Grid ----- */
+    .plot-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+    }
+
+    .plot-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .plot-panel h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .plot-panel p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* ----- Pre / Code Blocks ----- */
+    pre {
+      margin: 10px 0 0;
+      padding: 14px 18px;
+      overflow-x: auto;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      font: 13px/1.7 var(--font-mono);
+      color: #c8d6e5;
+      white-space: pre;
+    }
+
+    .example-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 14px 0 4px;
+      letter-spacing: 0.01em;
+    }
+
+    /* ----- Note / Misc ----- */
+    .note {
+      background: rgba(168, 85, 247, 0.06);
+      border: 1px solid rgba(168, 85, 247, 0.12);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      backdrop-filter: blur(4px);
+    }
+
+    .note code {
+      background: rgba(168, 85, 247, 0.12);
+      color: #c084fc;
+      border-color: rgba(168, 85, 247, 0.08);
+    }
+
+    /* ----- Lists ----- */
+    ul, ol {
+      margin: 0;
+      padding-inline-start: 22px;
+      color: var(--text-secondary);
+    }
+
+    li {
+      margin: 8px 0;
+      line-height: 1.7;
+    }
+
+    li::marker {
+      color: var(--accent-cyan);
+    }
+
+    /* ----- Footer ----- */
+    footer {
+      border-top: 1px solid var(--border-glass);
+      padding: 28px 0;
+      color: var(--text-muted);
+      font-size: 13px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(4px);
+    }
+
+    footer .page {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-cyan);
+    }
+
+    /* ----- Responsive ----- */
+    @media (max-width: 820px) {
+      .grid,
+      .plot-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-row {
+        flex-wrap: wrap;
+        min-height: 64px;
+        padding: 8px 0;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .intro {
+        padding: 24px 22px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .card {
+        padding: 16px 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        width: calc(100% - 24px);
+      }
+
+      table {
+        font-size: 13px;
+        min-width: 420px;
+      }
+
+      th,
+      td {
+        padding: 10px 12px;
+      }
+    }
+
+    /* ----- Smooth fade-in animation ----- */
+    section {
+      animation: fadeUp 0.5s ease-out both;
+    }
+
+    section:nth-child(2) {
+      animation-delay: 0.04s;
+    }
+    section:nth-child(3) {
+      animation-delay: 0.08s;
+    }
+    section:nth-child(4) {
+      animation-delay: 0.12s;
+    }
+    section:nth-child(5) {
+      animation-delay: 0.16s;
+    }
+    section:nth-child(6) {
+      animation-delay: 0.20s;
+    }
+    section:nth-child(7) {
+      animation-delay: 0.24s;
+    }
+    section:nth-child(8) {
+      animation-delay: 0.28s;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="page header-row">
-      <a class="brand" href="#top" id="brand">Embedded Serial Monitor</a>
-      <div class="language" aria-label="Language selector">
-        <span class="language-label" id="languageLabel">Language:</span>
-        <button id="enButton" class="active" type="button" aria-pressed="true">EN</button>
-        <button id="faButton" type="button" aria-pressed="false">فارسی</button>
-      </div>
+      <a class="brand" href="#top">Embedded Serial Monitor <small>v0.1.0</small></a>
     </div>
   </header>
 
   <main class="page" id="top">
+    <!-- Hero -->
     <section class="intro">
       <h1 id="title">Embedded Serial Monitor</h1>
       <p id="summary">A desktop tool for monitoring and sending data through Serial, TCP, and UDP connections.</p>
     </section>
 
+    <!-- Modes -->
     <section>
       <h2 id="modesHeading">Connection modes</h2>
       <div class="grid" id="modes"></div>
     </section>
 
+    <!-- Features -->
     <section>
-      <h2 id="featuresHeading">Main functions</h2>
-      <div class="card"><ul id="features"></ul></div>
+      <h2 id="featuresHeading">Feature reference</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th id="featureHeader">Feature</th><th id="featureDetailHeader">What it does</th></tr></thead>
+          <tbody id="features"></tbody>
+        </table>
+      </div>
     </section>
 
+    <!-- Downloads -->
     <section>
       <h2 id="downloadsHeading">Downloads</h2>
       <div class="table-wrap">
@@ -88,19 +580,74 @@
       </div>
     </section>
 
+    <!-- Operational Notes -->
     <section>
-      <h2 id="useHeading">Basic use</h2>
-      <div class="card"><ol id="steps"></ol></div>
+      <h2 id="useHeading">Operational notes</h2>
+      <div class="card"><ul id="steps"></ul></div>
     </section>
 
+    <!-- Plot -->
+    <section>
+      <h2 id="plotHeading">Plot data frames</h2>
+      <div class="plot-grid">
+        <div class="plot-panel">
+          <h3 id="plotFormatHeading">Accepted record format</h3>
+          <p id="plotFormatText"></p>
+          <p class="example-label" id="plotValidLabel">Valid frame</p>
+          <pre id="plotValidExample"></pre>
+          <p class="example-label" id="plotInvalidLabel">Ignored examples</p>
+          <pre id="plotInvalidExample"></pre>
+        </div>
+        <div class="plot-panel">
+          <h3 id="plotBehaviorHeading">How values become points</h3>
+          <ul id="plotBehavior"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Macro -->
+    <section>
+      <h2 id="macroHeading">Macro writing</h2>
+      <div class="card">
+        <p id="macroIntro"></p>
+        <div class="table-wrap macro-table">
+          <table>
+            <thead><tr><th id="commandHeader">Command</th><th id="meaningHeader">Meaning</th></tr></thead>
+            <tbody id="macroCommands"></tbody>
+          </table>
+        </div>
+        <p class="example-label" id="exampleLabel">Example</p>
+        <pre id="macroExample"></pre>
+      </div>
+    </section>
+
+    <!-- Macro limits -->
+    <section>
+      <h2 id="macroGuideHeading">Macro behavior and limits</h2>
+      <div class="card"><ul id="macroSteps"></ul></div>
+    </section>
+
+    <!-- Release note -->
     <section class="note" id="releaseNote"></section>
   </main>
 
-  <footer><div class="page" id="footerText">Embedded Serial Monitor is a local desktop application. Network connections are made directly from your computer.</div></footer>
+  <footer>
+    <div class="page">
+      <span id="footerText">Embedded Serial Monitor is a local desktop application. Network connections are made directly from your computer.</span>
+      <div class="footer-links">
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    // Set this once after you create the GitHub Release.
-    const RELEASE_BASE = "https://github.com/REPLACE-OWNER/REPLACE-REPOSITORY/releases/download/v0.1.0";
+    // ================================================================
+    //  DATA
+    // ================================================================
+
+    const RELEASE_BASE = "https://github.com/Kolahkaj/Embedded-Serial-Monitor/releases/download/v0.1.0";
 
     const files = [
       ["win64", "embedded-serial-monitor-win64-setup.exe"],
@@ -113,8 +660,7 @@
     const content = {
       en: {
         docTitle: "Embedded Serial Monitor",
-        description: "Embedded Serial Monitor: a desktop tool for Serial, TCP, and UDP communication.",
-        brand: "Embedded Serial Monitor", language: "Language:",
+        brand: "Embedded Serial Monitor",
         title: "Embedded Serial Monitor",
         summary: "A desktop tool for monitoring and sending data through Serial, TCP, and UDP connections.",
         modesHeading: "Connection modes",
@@ -123,60 +669,143 @@
           ["TCP", "Connect to a TCP server or listen for an incoming TCP connection."],
           ["UDP", "Send and receive UDP datagrams using a local or remote port."]
         ],
-        featuresHeading: "Main functions",
-        features: ["Live receive and transmit data", "Keyword filtering and copyable records", "Start/stop text logging", "Export retained data as CSV, JSON, or SQLite", "Plot numeric values from structured messages", "Separate Serial Network Bridge window"],
-        downloadsHeading: "Downloads", platformHeader: "Platform", fileHeader: "File", actionHeader: "Action",
-        platforms: {win64:"Windows 64-bit", win32:"Windows 32-bit", debian:"Debian / Ubuntu", arch:"Arch Linux", portable:"Portable Linux"},
-        download: "Download", useHeading: "Basic use",
-        steps: ["Choose Serial, TCP, or UDP in the connection settings.", "Connect, then read or send data in the main window.", "Use Start Logging for a text file or Export for CSV, JSON, or SQLite."],
-        note: "Before publishing this page, replace <code>REPLACE-OWNER/REPLACE-REPOSITORY</code> in <code>RELEASE_BASE</code> with your GitHub repository name.",
-        footer: "Embedded Serial Monitor is a local desktop application. Network connections are made directly from your computer."
-      },
-      fa: {
-        docTitle: "مانیتور سریال امبدد", description: "مانیتور سریال امبدد: ابزار دسکتاپ برای ارتباط سریال، TCP و UDP.",
-        brand: "مانیتور سریال امبدد", language: "زبان:", title: "مانیتور سریال امبدد",
-        summary: "ابزار دسکتاپ برای مشاهده و ارسال داده از طریق اتصال‌های سریال، TCP و UDP.",
-        modesHeading: "حالت‌های اتصال",
-        modes: [
-          ["سریال", "پورت COM یا دستگاه را باز کنید. سرعت، بیت داده، parity، بیت توقف و کنترل جریان را تنظیم کنید."],
-          ["TCP", "به سرور TCP وصل شوید یا برای اتصال ورودی TCP گوش دهید."],
-          ["UDP", "دیتاگرام‌های UDP را با پورت محلی یا راه‌دور ارسال و دریافت کنید."]
+        featuresHeading: "Feature reference",
+        featureHeader: "Feature",
+        featureDetailHeader: "What it does",
+        features: [
+          ["Live Data", "Displays RX, TX, and system records with copy support, keyword filtering, timestamps, and configurable byte rendering."],
+          ["Framing", "Groups incoming bytes as raw chunks, idle-timeout records, start/end-byte frames, or fixed-length frames before they reach the log and plot."],
+          ["Logging and export", "Logging writes displayed records to a text file. Export selects retained records by all, RX, TX, or bookmarks and writes CSV, JSON, or SQLite in the chosen byte view."],
+          ["Plot", "Extracts validated numeric fields from received structured records for time-series or X/Y views. Plot history is capped separately from the log."],
+          ["Serial Network Bridge", "For a Serial port, forwards serial bytes to a TCP or UDP endpoint and forwards network bytes back to the port. It is separate from direct TCP/UDP monitor modes."],
+          ["Triggers", "Matches incoming text against a regular expression and sends a configured ASCII or hexadecimal response."]
         ],
-        featuresHeading: "عملکردهای اصلی",
-        features: ["دادهٔ زندهٔ دریافت و ارسال", "فیلتر با کلیدواژه و رکوردهای قابل کپی", "شروع و توقف لاگ متنی", "خروجی‌گرفتن از داده‌های نگه‌داری‌شده به CSV، JSON یا SQLite", "رسم مقادیر عددی از پیام‌های ساخت‌یافته", "پنجرهٔ جداگانه برای پل شبکهٔ سریال"],
-        downloadsHeading: "دانلودها", platformHeader: "سیستم‌عامل", fileHeader: "فایل", actionHeader: "دریافت",
-        platforms: {win64:"ویندوز ۶۴ بیتی", win32:"ویندوز ۳۲ بیتی", debian:"دبیان / اوبونتو", arch:"لینوکس آرچ", portable:"لینوکس قابل حمل"},
-        download: "دریافت", useHeading: "روش استفاده",
-        steps: ["در تنظیمات اتصال، سریال، TCP یا UDP را انتخاب کنید.", "وصل شوید و داده را در پنجرهٔ اصلی بخوانید یا ارسال کنید.", "برای فایل متنی از شروع لاگ و برای CSV، JSON یا SQLite از خروجی استفاده کنید."],
-        note: "پیش از انتشار این صفحه، مقدار <code>REPLACE-OWNER/REPLACE-REPOSITORY</code> را در <code>RELEASE_BASE</code> با نام مخزن GitHub خود جایگزین کنید.",
-        footer: "مانیتور سریال امبدد یک برنامهٔ دسکتاپ محلی است. اتصال‌های شبکه مستقیماً از رایانهٔ شما برقرار می‌شوند."
+        downloadsHeading: "Downloads",
+        platformHeader: "Platform",
+        fileHeader: "File",
+        actionHeader: "Action",
+        platforms: {
+          win64: "Windows 64-bit",
+          win32: "Windows 32-bit",
+          debian: "Debian / Ubuntu",
+          arch: "Arch Linux",
+          portable: "Portable Linux"
+        },
+        download: "Download",
+        useHeading: "Operational notes",
+        steps: [
+          "Choose framing to match the device protocol. Record boundaries affect Live Data, keyword matching, and structured plotting.",
+          "At high input rates, the application applies display and retention limits. Review system records and dropped-data counters before treating the visible log as complete evidence.",
+          "The direct TCP and UDP modes operate as client or server/listener. A UDP listener replies to the most recent peer after it has received a datagram.",
+          "Use the bridge only when a Serial device must be exposed over TCP or UDP; direct TCP/UDP monitoring does not require a Serial port."
+        ],
+        plotHeading: "Plot data frames",
+        plotFormatHeading: "Accepted record format",
+        plotFormatText: 'The plot parser reads complete brace-delimited objects inside one received record. Each value must be a finite number. Field names may use ASCII letters, digits, <code>_</code>, <code>-</code>, or <code>.</code>; quoted keys and numeric values are accepted.',
+        plotValidLabel: "Valid frame",
+        plotValidExample: "status { temperature: 24.6, rpm: 1250, voltage: -3.25 }",
+        plotInvalidLabel: "Ignored examples",
+        plotInvalidExample: "{ temperature: 24.6          # no closing brace\n{ temp C: 24 }               # space in key\n{ mode: auto }               # non-numeric value",
+        plotBehaviorHeading: "How values become points",
+        plotBehavior: [
+          "Only received records are parsed. Incomplete objects are not joined with later records.",
+          "Time series creates samples for values present in that individual record, using elapsed connection time on the X axis.",
+          "X/Y mode uses the latest valid value of each selected field. X and Y may arrive in the same object or in alternating records.",
+          "A record can contain more than one object. Later occurrences of the same field in that record replace earlier ones.",
+          "Set framing so a complete object arrives in one record; otherwise the parser intentionally ignores it."
+        ],
+        macroHeading: "Macro reference",
+        macroIntro: 'Macros execute in order on the selected connected Serial port. Empty lines and lines starting with <code>#</code> are ignored. Use one command per line; commands are case-insensitive.',
+        commandHeader: "Command",
+        meaningHeader: "Effect",
+        macroCommands: [
+          ["SEND text", "Send text exactly as written."],
+          ["SEND_HEX AA 55", "Send hexadecimal bytes."],
+          ["DELAY 100", "Wait 100 milliseconds. WAIT is an alias."],
+          ["DTR_PULSE 50", "Pulse DTR for 50 milliseconds. This is a serial electrical control."],
+          ["BREAK 100", "Send a serial BREAK condition for 100 milliseconds."],
+          ["REPEAT 3 … END", "Repeat the commands inside the block. The count must be 1–10,000; repeat nesting is limited to two levels."]
+        ],
+        exampleLabel: "Example: send a reset sequence",
+        macroExample: "# Reset target\nSEND_HEX 55 AA\nDELAY 100\nDTR_PULSE 50\n\nREPEAT 3\nSEND PING\nDELAY 200\nEND",
+        macroGuideHeading: "Macro behavior and limits",
+        macroSteps: [
+          "The macro runner sends actions in script order. Completion reports the number of sends, control actions, and any errors in the system log.",
+          "SEND is plain text. SEND_HEX requires valid hexadecimal bytes; use it for protocol frames rather than typed text.",
+          "DTR_PULSE and BREAK are serial electrical controls. They do not apply to direct TCP or UDP monitor connections.",
+          "There are no variables, conditions, receive-wait commands, or unlimited loops. Use DELAY for pacing and test a small REPEAT count first."
+        ],
+        note: 'ehsankolahkaj@gmail.com',
+        footer: "Embedded Serial Monitor is a local desktop application. Network connections are made directly from your computer."
       }
     };
 
+    // ================================================================
+    //  RENDER
+    // ================================================================
+
     const setText = (id, value) => document.getElementById(id).textContent = value;
-    const setLanguage = (lang) => {
-      const t = content[lang];
-      const rtl = lang === "fa";
-      document.documentElement.lang = lang;
-      document.documentElement.dir = rtl ? "rtl" : "ltr";
+    const setHTML = (id, value) => document.getElementById(id).innerHTML = value;
+
+    const render = () => {
+      const t = content.en;
+
       document.title = t.docTitle;
-      document.querySelector('meta[name="description"]').content = t.description;
-      setText("brand", t.brand); setText("languageLabel", t.language); setText("title", t.title); setText("summary", t.summary);
-      setText("modesHeading", t.modesHeading); setText("featuresHeading", t.featuresHeading); setText("downloadsHeading", t.downloadsHeading);
-      setText("platformHeader", t.platformHeader); setText("fileHeader", t.fileHeader); setText("actionHeader", t.actionHeader); setText("useHeading", t.useHeading); setText("footerText", t.footer);
-      document.getElementById("modes").innerHTML = t.modes.map(([name, text]) => `<article class="card"><h3>${name}</h3><p>${text}</p></article>`).join("");
-      document.getElementById("features").innerHTML = t.features.map(item => `<li>${item}</li>`).join("");
+      document.querySelector('meta[name="description"]').content = t.docTitle;
+
+      setText("title", t.title);
+      setText("summary", t.summary);
+      setText("modesHeading", t.modesHeading);
+      setText("featuresHeading", t.featuresHeading);
+      setText("downloadsHeading", t.downloadsHeading);
+      setText("platformHeader", t.platformHeader);
+      setText("fileHeader", t.fileHeader);
+      setText("actionHeader", t.actionHeader);
+      setText("useHeading", t.useHeading);
+      setText("footerText", t.footer);
+      setText("featureHeader", t.featureHeader);
+      setText("featureDetailHeader", t.featureDetailHeader);
+      setText("plotHeading", t.plotHeading);
+      setText("plotFormatHeading", t.plotFormatHeading);
+      setHTML("plotFormatText", t.plotFormatText);
+      setText("plotValidLabel", t.plotValidLabel);
+      setText("plotValidExample", t.plotValidExample);
+      setText("plotInvalidLabel", t.plotInvalidLabel);
+      setText("plotInvalidExample", t.plotInvalidExample);
+      setText("plotBehaviorHeading", t.plotBehaviorHeading);
+      setText("macroHeading", t.macroHeading);
+      setHTML("macroIntro", t.macroIntro);
+      setText("commandHeader", t.commandHeader);
+      setText("meaningHeader", t.meaningHeader);
+      setText("exampleLabel", t.exampleLabel);
+      setText("macroExample", t.macroExample);
+      setText("macroGuideHeading", t.macroGuideHeading);
+
+      document.getElementById("modes").innerHTML = t.modes.map(([name, text]) =>
+        `<article class="card"><h3>${name}</h3><p>${text}</p></article>`
+      ).join("");
+
+      document.getElementById("features").innerHTML = t.features.map(([feature, detail]) =>
+        `<tr><td><strong>${feature}</strong></td><td>${detail}</td></tr>`
+      ).join("");
+
       document.getElementById("steps").innerHTML = t.steps.map(item => `<li>${item}</li>`).join("");
-      document.getElementById("downloads").innerHTML = files.map(([platform, file]) => `<tr><td>${t.platforms[platform]}</td><td><code>${file}</code></td><td><a class="download" href="${RELEASE_BASE}/${file}">${t.download}</a></td></tr>`).join("");
+      document.getElementById("plotBehavior").innerHTML = t.plotBehavior.map(item => `<li>${item}</li>`).join("");
+
+      document.getElementById("macroCommands").innerHTML = t.macroCommands.map(([command, meaning]) =>
+        `<tr><td><code>${command}</code></td><td>${meaning}</td></tr>`
+      ).join("");
+
+      document.getElementById("macroSteps").innerHTML = t.macroSteps.map(item => `<li>${item}</li>`).join("");
+
+      document.getElementById("downloads").innerHTML = files.map(([platform, file]) =>
+        `<tr><td>${t.platforms[platform]}</td><td><code>${file}</code></td><td><a class="download" href="${RELEASE_BASE}/${file}">${t.download}</a></td></tr>`
+      ).join("");
+
       document.getElementById("releaseNote").innerHTML = t.note;
-      document.getElementById("enButton").classList.toggle("active", !rtl); document.getElementById("faButton").classList.toggle("active", rtl);
-      document.getElementById("enButton").setAttribute("aria-pressed", String(!rtl)); document.getElementById("faButton").setAttribute("aria-pressed", String(rtl));
-      try { localStorage.setItem("esm-language", lang); } catch (e) {}
     };
 
-    document.getElementById("enButton").addEventListener("click", () => setLanguage("en"));
-    document.getElementById("faButton").addEventListener("click", () => setLanguage("fa"));
-    try { setLanguage(localStorage.getItem("esm-language") === "fa" ? "fa" : "en"); } catch (e) { setLanguage("en"); }
+    render();
   </script>
 </body>
 </html>
