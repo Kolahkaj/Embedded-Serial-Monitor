@@ -124,7 +124,7 @@
 
     /* ----- Typography ----- */
     h1 {
-      font-size: clamp(34px, 5vw, 52px);
+      font-size: clamp(28px, 5vw, 52px);
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.1;
@@ -132,10 +132,11 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      word-break: break-word;
     }
 
     h2 {
-      font-size: 18px;
+      font-size: clamp(16px, 2.5vw, 18px);
       font-weight: 600;
       letter-spacing: -0.01em;
       color: var(--text-primary);
@@ -143,17 +144,19 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     h2::after {
       content: '';
       flex: 1;
+      min-width: 30px;
       height: 1px;
       background: linear-gradient(90deg, var(--border-glass-strong), transparent);
     }
 
     h3 {
-      font-size: 16px;
+      font-size: clamp(14px, 2vw, 16px);
       font-weight: 600;
       color: #fff;
       margin-bottom: 4px;
@@ -163,12 +166,14 @@
       color: var(--text-secondary);
       margin: 0 0 12px;
       line-height: 1.7;
+      word-wrap: break-word;
     }
 
     a {
       color: var(--accent-cyan);
       text-decoration: none;
       transition: var(--transition);
+      word-wrap: break-word;
     }
 
     a:hover {
@@ -177,12 +182,13 @@
 
     code {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: clamp(11px, 1.5vw, 12px);
       background: rgba(0, 229, 255, 0.08);
       color: var(--accent-cyan);
       padding: 2px 8px;
       border-radius: 6px;
       border: 1px solid rgba(0, 229, 255, 0.08);
+      word-break: break-word;
     }
 
     /* ----- Intro / Hero ----- */
@@ -191,7 +197,7 @@
       backdrop-filter: blur(12px);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-lg);
-      padding: 36px 40px;
+      padding: clamp(24px, 4vw, 36px) clamp(20px, 3vw, 40px);
       box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.04);
       position: relative;
       overflow: hidden;
@@ -206,7 +212,7 @@
     }
 
     .intro p {
-      font-size: 17px;
+      font-size: clamp(15px, 2vw, 17px);
       max-width: 680px;
       color: var(--text-secondary);
       margin-top: 8px;
@@ -216,7 +222,7 @@
     /* ----- Grids ----- */
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: 14px;
     }
 
@@ -226,9 +232,11 @@
       backdrop-filter: blur(8px);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
-      padding: 20px 22px;
+      padding: clamp(16px, 2.5vw, 20px) clamp(16px, 2.5vw, 22px);
       transition: var(--transition);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .card:hover {
@@ -239,13 +247,14 @@
     }
 
     .card h3 {
-      font-size: 15px;
+      font-size: clamp(14px, 2vw, 15px);
       font-weight: 700;
       color: #fff;
       margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .card h3 .badge {
@@ -258,10 +267,11 @@
       padding: 0 8px;
       border-radius: 20px;
       border: 1px solid rgba(0, 229, 255, 0.08);
+      white-space: nowrap;
     }
 
     .card p {
-      font-size: 14px;
+      font-size: clamp(13px, 1.5vw, 14px);
       color: var(--text-secondary);
       margin: 0;
     }
@@ -274,32 +284,36 @@
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-card);
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 580px;
-      font-size: 14px;
+      min-width: 500px;
+      font-size: clamp(13px, 1.5vw, 14px);
     }
 
     th {
       text-align: left;
-      padding: 14px 18px;
+      padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 18px);
       font-weight: 600;
-      font-size: 11px;
+      font-size: clamp(10px, 1.2vw, 11px);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
       border-bottom: 1px solid var(--border-glass);
       background: rgba(255, 255, 255, 0.02);
+      white-space: nowrap;
     }
 
     td {
-      padding: 14px 18px;
+      padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 18px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.03);
       color: var(--text-secondary);
       vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     tr:last-child td {
@@ -324,12 +338,13 @@
       border-radius: 40px;
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
       color: #0b0d15;
-      font-size: 13px;
+      font-size: clamp(12px, 1.5vw, 13px);
       font-weight: 700;
       text-decoration: none;
       transition: var(--transition);
       border: 0;
       box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+      white-space: nowrap;
     }
 
     .download:hover {
@@ -341,7 +356,7 @@
     /* ----- Plot Grid ----- */
     .plot-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
       gap: 14px;
     }
 
@@ -350,37 +365,41 @@
       backdrop-filter: blur(8px);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-md);
-      padding: 20px 22px;
+      padding: clamp(16px, 2.5vw, 20px) clamp(16px, 2.5vw, 22px);
       box-shadow: var(--shadow-card);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .plot-panel h3 {
-      font-size: 15px;
+      font-size: clamp(14px, 2vw, 15px);
       font-weight: 600;
       color: #fff;
       margin-bottom: 6px;
     }
 
     .plot-panel p {
-      font-size: 14px;
+      font-size: clamp(13px, 1.5vw, 14px);
       color: var(--text-secondary);
     }
 
     /* ----- Pre / Code Blocks ----- */
     pre {
       margin: 10px 0 0;
-      padding: 14px 18px;
+      padding: clamp(12px, 2vw, 14px) clamp(14px, 2vw, 18px);
       overflow-x: auto;
       background: rgba(0, 0, 0, 0.5);
       border: 1px solid var(--border-glass);
       border-radius: var(--radius-sm);
-      font: 13px/1.7 var(--font-mono);
+      font: clamp(12px, 1.5vw, 13px)/1.7 var(--font-mono);
       color: #c8d6e5;
-      white-space: pre;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      -webkit-overflow-scrolling: touch;
     }
 
     .example-label {
-      font-size: 13px;
+      font-size: clamp(12px, 1.5vw, 13px);
       font-weight: 600;
       color: var(--text-secondary);
       margin: 14px 0 4px;
@@ -392,10 +411,11 @@
       background: rgba(168, 85, 247, 0.06);
       border: 1px solid rgba(168, 85, 247, 0.12);
       border-radius: var(--radius-md);
-      padding: 18px 24px;
+      padding: clamp(16px, 2.5vw, 18px) clamp(18px, 3vw, 24px);
       color: var(--text-secondary);
-      font-size: 14px;
+      font-size: clamp(13px, 1.5vw, 14px);
       backdrop-filter: blur(4px);
+      word-wrap: break-word;
     }
 
     .note code {
@@ -414,6 +434,7 @@
     li {
       margin: 8px 0;
       line-height: 1.7;
+      word-wrap: break-word;
     }
 
     li::marker {
@@ -425,7 +446,7 @@
       border-top: 1px solid var(--border-glass);
       padding: 28px 0;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: clamp(12px, 1.5vw, 13px);
       background: rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(4px);
     }
@@ -445,7 +466,7 @@
 
     .footer-links a {
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: clamp(12px, 1.5vw, 13px);
       transition: var(--transition);
     }
 
@@ -467,35 +488,140 @@
       }
 
       .brand {
-        font-size: 18px;
+        font-size: clamp(16px, 4vw, 18px);
+      }
+
+      .brand small {
+        font-size: clamp(11px, 2.5vw, 13px);
       }
 
       .intro {
-        padding: 24px 22px;
+        padding: 20px 18px;
       }
 
       h1 {
-        font-size: 28px;
+        font-size: clamp(24px, 6vw, 28px);
+      }
+
+      h2 {
+        font-size: clamp(15px, 3vw, 17px);
       }
 
       .card {
-        padding: 16px 18px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .page {
-        width: calc(100% - 24px);
+        padding: 14px 16px;
       }
 
       table {
-        font-size: 13px;
         min-width: 420px;
+        font-size: 13px;
       }
 
       th,
       td {
         padding: 10px 12px;
+      }
+
+      footer .page {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        width: calc(100% - 16px);
+        padding: 0 2px;
+      }
+
+      table {
+        min-width: 320px;
+        font-size: 12px;
+      }
+
+      th {
+        font-size: 10px;
+        padding: 8px 10px;
+      }
+
+      td {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      .download {
+        font-size: 11px;
+        padding: 5px 12px;
+        white-space: normal;
+      }
+
+      .intro {
+        padding: 16px 14px;
+        border-radius: 16px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      h2 {
+        font-size: 14px;
+        gap: 8px;
+      }
+
+      h2::after {
+        min-width: 20px;
+      }
+
+      .card {
+        padding: 12px 14px;
+        border-radius: 12px;
+      }
+
+      .plot-panel {
+        padding: 12px 14px;
+        border-radius: 12px;
+      }
+
+      pre {
+        font-size: 11px;
+        padding: 10px 12px;
+      }
+
+      .note {
+        padding: 14px 16px;
+        font-size: 12px;
+      }
+
+      ul, ol {
+        padding-inline-start: 18px;
+      }
+
+      li {
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      table {
+        min-width: 280px;
+        font-size: 11px;
+      }
+
+      th, td {
+        padding: 6px 8px;
+      }
+
+      .brand {
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 20px;
       }
     }
 
