@@ -1,0 +1,52 @@
+[package]
+name = "embedded-serial-monitor"
+version = "0.1.0"
+edition = "2021"
+authors = ["Manus AI"]
+description = "Advanced multi-port serial monitor for embedded engineers"
+license = "MIT"
+
+[dependencies]
+anyhow = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+crossbeam-channel = "0.5"
+dirs = "5.0"
+eframe = "0.30"
+egui_extras = "0.30"
+egui_plot = "0.30"
+hex = "0.4"
+rand = "0.8"
+regex = "1.11"
+rfd = "0.15"
+rustfft = "6.2"
+rusqlite = { version = "0.32", features = ["bundled"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serialport = "4.6"
+thiserror = "2.0"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 8
+strip = true
+
+[package.metadata.bundle]
+name = "Embedded Serial Monitor"
+identifier = "com.manus.embeddedserialmonitor"
+icon = ["assets/icon.png"]
+category = "DeveloperTool"
+short_description = "Advanced serial monitor for embedded engineers"
+long_description = "A cross-platform, high-performance serial monitor with protocol decoding, export, macros, filtering, and remote bridging."
+
+[package.metadata.winres]
+FileDescription = "Embedded Serial Monitor"
+ProductName = "Embedded Serial Monitor"
+OriginalFilename = "embedded-serial-monitor.exe"
+
+[[bin]]
+name = "embedded-serial-monitor"
+path = "src/main.rs"
+
+[workspace]
+resolver = "2"
