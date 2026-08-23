@@ -1,0 +1,115 @@
+MIT License
+
+Copyright (c) 2026 Ehsan Kolahkaj
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+THIRD-PARTY SOFTWARE NOTICES
+
+This software includes code from the following open-source projects:
+
+1. egui (Apache 2.0 / MIT)
+   - https://github.com/emilk/egui
+   - Copyright (c) 2019-2025 Emil Ernerfeldt
+   - Licensed under Apache License 2.0 or MIT
+
+2. egui-plot (Apache 2.0 / MIT)
+   - https://github.com/emilk/egui/tree/master/crates/egui_plot
+   - Copyright (c) 2020-2025 Emil Ernerfeldt
+   - Licensed under Apache License 2.0 or MIT
+
+3. serialport (MIT)
+   - https://github.com/serialport/serialport-rs
+   - Copyright (c) 2017-2025 serialport-rs developers
+   - Licensed under MIT
+
+4. chrono (MIT / Apache 2.0)
+   - https://github.com/chronotope/chrono
+   - Copyright (c) 2014-2025 chrono authors
+   - Licensed under MIT or Apache 2.0
+
+5. anyhow (MIT / Apache 2.0)
+   - https://github.com/dtolnay/anyhow
+   - Copyright (c) 2019-2025 David Tolnay
+   - Licensed under MIT or Apache 2.0
+
+6. thiserror (MIT / Apache 2.0)
+   - https://github.com/dtolnay/thiserror
+   - Copyright (c) 2019-2025 David Tolnay
+   - Licensed under MIT or Apache 2.0
+
+7. serde (MIT / Apache 2.0)
+   - https://github.com/serde-rs/serde
+   - Copyright (c) 2015-2025 serde developers
+   - Licensed under MIT or Apache 2.0
+
+8. serde_json (MIT / Apache 2.0)
+   - https://github.com/serde-rs/json
+   - Copyright (c) 2015-2025 serde developers
+   - Licensed under MIT or Apache 2.0
+
+9. rusqlite (MIT)
+   - https://github.com/rusqlite/rusqlite
+   - Copyright (c) 2014-2025 rusqlite developers
+   - Licensed under MIT
+
+10. rfd (MIT)
+    - https://github.com/PolyMeilex/rfd
+    - Copyright (c) 2021-2025 rfd contributors
+    - Licensed under MIT
+
+11. regex (MIT / Apache 2.0)
+    - https://github.com/rust-lang/regex
+    - Copyright (c) 2014-2025 Rust Project Developers
+    - Licensed under MIT or Apache 2.0
+
+12. crossbeam-channel (MIT / Apache 2.0)
+    - https://github.com/crossbeam-rs/crossbeam
+    - Copyright (c) 2019-2025 crossbeam contributors
+    - Licensed under MIT or Apache 2.0
+
+13. rand (MIT / Apache 2.0)
+    - https://github.com/rust-random/rand
+    - Copyright (c) 2018-2025 The Rand Project Developers
+    - Licensed under MIT or Apache 2.0
+
+14. rustfft (MIT / Apache 2.0)
+    - https://github.com/ejmahler/RustFFT
+    - Copyright (c) 2020-2025 Evan Mahler
+    - Licensed under MIT or Apache 2.0
+
+15. hex (MIT / Apache 2.0)
+    - https://github.com/KokaKiwi/rust-hex
+    - Copyright (c) 2020-2025 hex contributors
+    - Licensed under MIT or Apache 2.0
+
+16. dirs (MIT / Apache 2.0)
+    - https://github.com/dirs-dev/dirs-rs
+    - Copyright (c) 2020-2025 dirs developers
+    - Licensed under MIT or Apache 2.0
+
+17. libsqlite3-sys (MIT)
+    - https://github.com/rusqlite/rusqlite
+    - Copyright (c) 2014-2025 rusqlite developers
+    - Licensed under MIT
+
+For complete license texts of the above dependencies, please refer to their
+respective repositories or the source code included with this software.
