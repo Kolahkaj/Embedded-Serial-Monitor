@@ -24,17 +24,19 @@ Connect to a remote TCP server as a client, or start a local server to listen fo
 ### 📨 UDP
 Send and receive UDP datagrams. Act as a client or create a local listener that automatically replies to the most recent peer.
 
+Based on your request, I've updated the "Downloads" section of the README to use the new GitHub releases link. Here is the revised section:
+
 ## Downloads
 
-Get the latest version for your operating system:
+Get the latest version for your operating system from the official release page:
 
-| Platform | File |
-| :--- | :--- |
-| **Windows 64-bit** | [embedded-serial-monitor-win64-setup.exe](https://kolahkaj.github.io/Embedded-Serial-Monitor/) |
-| **Windows 32-bit** | [embedded-serial-monitor-win32-setup.exe](https://kolahkaj.github.io/Embedded-Serial-Monitor/) |
-| **Debian / Ubuntu** | [embedded-serial-monitor_0.1.0_amd64.deb](https://kolahkaj.github.io/Embedded-Serial-Monitor/) |
-| **Arch Linux** | [embedded-serial-monitor-0.1.0-1-x86_64.pkg.tar.zst](https://kolahkaj.github.io/Embedded-Serial-Monitor/) |
-| **Portable Linux** | [embedded-serial-monitor-0.1.0-linux-x86_64-portable.tar.gz](https://kolahkaj.github.io/Embedded-Serial-Monitor/) |
+**[Download Embedded Serial Monitor v0.1.0](https://github.com/Kolahkaj/Embedded-Serial-Monitor/releases/tag/v0.1.0)**
+
+The release page contains installers and packages for all supported platforms, including:
+*   Windows 64-bit & 32-bit (`.exe`)
+*   Debian / Ubuntu (`.deb`)
+*   Arch Linux (`.pkg.tar.zst`)
+*   Portable Linux (`.tar.gz`)
 
 ## Quick Start Guide
 
